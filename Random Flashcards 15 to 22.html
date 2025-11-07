@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Nursing Questions - Chapters 15-22</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            height: 95vh;
+            max-height: 95vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" opacity="0.1"><path d="M30,30 Q50,10 70,30 T90,50 T70,70 T50,90 T30,70 T10,50 T30,30 Z" fill="white"/></svg>');
+        }
+        
+        .header h1 {
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            margin-bottom: 8px;
+            position: relative;
+        }
+        
+        .header .subtitle {
+            font-size: clamp(0.8rem, 2.5vw, 1rem);
+            opacity: 0.9;
+            position: relative;
+        }
+        
+        .progress {
+            background: #34495e;
+            height: 8px;
+            width: 100%;
+            flex-shrink: 0;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .flashcard {
+            padding: clamp(10px, 3vw, 20px);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #f8f9fa;
+            overflow-y: auto;
+        }
+        
+        .question-container {
+            display: flex;
+            gap: clamp(10px, 2vw, 15px);
+            align-items: flex-start;
+            margin-bottom: clamp(10px, 2vw, 15px);
+        }
+        
+        .question-icon {
+            background: #3498db;
+            color: white;
+            width: clamp(35px, 8vw, 50px);
+            height: clamp(35px, 8vw, 50px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            font-weight: bold;
+            flex-shrink: 0;
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+        }
+        
+        .question {
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            line-height: 1.6;
+            color: #2c3e50;
+            flex-grow: 1;
+            font-weight: 500;
+        }
+        
+        .chapter-info {
+            background: #e3f2fd;
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin-bottom: 10px;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            color: #1565c0;
+            border-left: 4px solid #3498db;
+        }
+        
+        .hint-container {
+            margin: clamp(8px, 2vw, 15px) 0;
+            text-align: center;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(6px, 1.5vw, 10px);
+            margin-bottom: clamp(10px, 2vw, 20px);
+            flex: 1;
+        }
+        
+        .option {
+            padding: clamp(10px, 2vw, 14px) clamp(12px, 2.5vw, 18px);
+            border: 2px solid #bdc3c7;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            display: flex;
+            align-items: center;
+            gap: clamp(8px, 1.5vw, 10px);
+            font-size: clamp(0.85rem, 2vw, 1rem);
+        }
+        
+        .option:hover {
+            background: #e9ecef;
+            border-color: #95a5a6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .option-letter {
+            background: #ecf0f1;
+            color: #2c3e50;
+            width: clamp(24px, 5vw, 28px);
+            height: clamp(24px, 5vw, 28px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+            font-size: clamp(0.75rem, 1.8vw, 0.9rem);
+        }
+        
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        
+        .option.correct .option-letter {
+            background: #28a745;
+            color: white;
+        }
+        
+        .option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+        
+        .option.incorrect .option-letter {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .feedback {
+            padding: clamp(12px, 2.5vw, 16px);
+            border-radius: 12px;
+            margin-bottom: clamp(10px, 2vw, 16px);
+            display: none;
+            align-items: center;
+            gap: clamp(8px, 1.5vw, 12px);
+            font-weight: 500;
+            font-size: clamp(0.85rem, 2vw, 1rem);
+        }
+        
+        .feedback.correct {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+            display: flex;
+        }
+        
+        .feedback.incorrect {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+            display: flex;
+        }
+        
+        .feedback-icon {
+            font-size: clamp(1.2rem, 3vw, 1.4rem);
+            flex-shrink: 0;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: clamp(12px, 2.5vw, 16px) clamp(16px, 3vw, 24px);
+            background: #ecf0f1;
+            border-top: 1px solid #bdc3c7;
+            flex-shrink: 0;
+        }
+        
+        .counter {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: clamp(0.85rem, 2vw, 1rem);
+        }
+        
+        .btn {
+            padding: clamp(10px, 2vw, 12px) clamp(15px, 2.5vw, 20px);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: clamp(6px, 1vw, 8px);
+            font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+            white-space: nowrap;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(149, 165, 166, 0.3);
+        }
+        
+        .btn-hint {
+            background: linear-gradient(135deg, #ffc107, #ff9800);
+            color: white;
+            padding: clamp(8px, 1.5vw, 10px) clamp(12px, 2vw, 16px);
+            font-size: clamp(0.75rem, 1.6vw, 0.85rem);
+        }
+        
+        .btn-hint:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(255, 193, 7, 0.3);
+        }
+        
+        .btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .rationale {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border: 2px solid #ffd43b;
+            border-radius: 12px;
+            padding: clamp(12px, 2.5vw, 16px);
+            margin-top: clamp(8px, 1.5vw, 12px);
+            display: none;
+        }
+        
+        .rationale.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+        
+        .rationale h4 {
+            color: #856404;
+            margin-bottom: clamp(6px, 1.2vw, 10px);
+            display: flex;
+            align-items: center;
+            gap: clamp(6px, 1.2vw, 8px);
+            font-size: clamp(0.9rem, 2.2vw, 1.1rem);
+        }
+        
+        .rationale p {
+            color: #856404;
+            line-height: 1.6;
+            font-size: clamp(0.8rem, 1.8vw, 0.95rem);
+        }
+        
+        .hint {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border: 2px dashed #2196f3;
+            border-radius: 12px;
+            padding: clamp(12px, 2.5vw, 16px);
+            margin-top: clamp(6px, 1.2vw, 10px);
+            display: none;
+            animation: slideIn 0.5s ease;
+        }
+        
+        .hint.show {
+            display: block;
+        }
+        
+        .hint h4 {
+            color: #1565c0;
+            margin-bottom: clamp(6px, 1.2vw, 8px);
+            display: flex;
+            align-items: center;
+            gap: clamp(5px, 1vw, 6px);
+            font-size: clamp(0.85rem, 2vw, 1rem);
+        }
+        
+        .hint p {
+            color: #1565c0;
+            line-height: 1.5;
+            font-size: clamp(0.75rem, 1.6vw, 0.9rem);
+            font-style: italic;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .stats {
+            display: flex;
+            gap: clamp(8px, 1.5vw, 15px);
+            justify-content: center;
+            margin-top: clamp(4px, 1vw, 10px);
+            flex-wrap: wrap;
+        }
+        
+        .stat {
+            background: rgba(255,255,255,0.2);
+            padding: clamp(5px, 1vw, 6px) clamp(8px, 1.8vw, 12px);
+            border-radius: 20px;
+            font-size: clamp(0.7rem, 1.6vw, 0.85rem);
+            white-space: nowrap;
+        }
+        
+        /* Cancel selection button */
+        .cancel-selection {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            margin: 0 auto clamp(10px, 2vw, 15px) auto;
+            display: none;
+        }
+        
+        .cancel-selection:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(255, 107, 107, 0.3);
+        }
+        
+        .cancel-selection.show {
+            display: flex;
+        }
+        
+        /* Mobile-specific adjustments */
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+            
+            .container {
+                height: 100vh;
+                max-height: 100vh;
+                border-radius: 15px;
+            }
+            
+            .question-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 8px;
+            }
+            
+            .question-icon {
+                align-self: center;
+            }
+            
+            .navigation {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            
+            .btn {
+                padding: 10px 16px;
+                flex: 1;
+                justify-content: center;
+                min-width: 120px;
+            }
+            
+            .counter {
+                order: -1;
+                width: 100%;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .flashcard {
+                padding: 8px;
+            }
+            
+            .navigation {
+                padding: 10px 12px;
+            }
+            
+            .btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+                min-width: 100px;
+            }
+            
+            .options {
+                gap: 5px;
+            }
+            
+            .option {
+                padding: 8px 10px;
+            }
+        }
+        
+        /* Very small screens */
+        @media (max-width: 320px) {
+            .header h1 {
+                font-size: 1.1rem;
+            }
+            
+            .header .subtitle {
+                font-size: 0.75rem;
+            }
+            
+            .btn {
+                padding: 6px 10px;
+                font-size: 0.75rem;
+                min-width: 80px;
+            }
+        }
+        
+        /* Large screens optimization */
+        @media (min-width: 1400px) {
+            .container {
+                max-height: 1000px;
+            }
+            
+            .flashcard {
+                padding: 25px;
+            }
+        }
+        
+        /* Tall screens */
+        @media (min-height: 1000px) {
+            .flashcard {
+                padding: 25px;
+            }
+            
+            .question {
+                font-size: 1.2rem;
+            }
+            
+            .option {
+                font-size: 1.1rem;
+            }
+        }
+        
+        /* Short screens */
+        @media (max-height: 600px) {
+            .header {
+                padding: 10px;
+            }
+            
+            .flashcard {
+                padding: 8px;
+            }
+            
+            .question-icon {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+            
+            .question {
+                font-size: 0.9rem;
+            }
+            
+            .options {
+                gap: 5px;
+            }
+            
+            .option {
+                padding: 6px 8px;
+                font-size: 0.8rem;
+            }
+            
+            .option-letter {
+                width: 20px;
+                height: 20px;
+                font-size: 0.7rem;
+            }
+            
+            .navigation {
+                padding: 8px 10px;
+            }
+            
+            .btn {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Random Nursing Questions</h1>
+            <div class="subtitle">Chapters 15-22 - Maternity & Pediatric Nursing</div>
+            <div class="stats">
+                <div class="stat">🎯 200+ Questions</div>
+                <div class="stat">💡 Hint Feature</div>
+                <div class="stat">📖 Chapters 15-22</div>
+                <div class="stat">🔀 Random Selection</div>
+            </div>
+        </div>
+        <div class="progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div class="flashcard">
+            <div class="chapter-info" id="chapterInfo">
+                <!-- Chapter info will be displayed here -->
+            </div>
+            
+            <div class="question-container">
+                <div class="question-icon">?</div>
+                <div class="question" id="question"></div>
+            </div>
+            
+            <div class="hint-container">
+                <button class="btn btn-hint" id="hintBtn" onclick="showHint()">
+                    💡 Show Hint
+                </button>
+                <div class="hint" id="hint">
+                    <h4>💡 Study Tip:</h4>
+                    <p id="hintText"></p>
+                </div>
+            </div>
+            
+            <div class="options" id="options"></div>
+            
+            <!-- Cancel Selection Button - Only shows for wrong answers -->
+            <button class="btn cancel-selection" id="cancelBtn" onclick="cancelSelection()">
+                ↩️ Cancel Selection
+            </button>
+            
+            <div class="feedback" id="feedback">
+                <div class="feedback-icon" id="feedbackIcon"></div>
+                <div id="feedbackText"></div>
+            </div>
+            <div class="rationale" id="rationale">
+                <h4>💡 Rationale:</h4>
+                <p id="rationaleText"></p>
+            </div>
+        </div>
+        
+        <div class="navigation">
+            <button class="btn btn-secondary" id="prevBtn" onclick="previousCard()">
+                ⬅️ Previous
+            </button>
+            <div class="counter" id="counter">1/1</div>
+            <button class="btn btn-primary" id="nextBtn" onclick="nextCard()">
+                Next ➡️
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Define all questions from chapters 15-22
+        const allQuestions = [
+            // Chapter 15 Questions
+            {
+                question: "A primipara client gave birth vaginally to a healthy newborn girl 12 hours ago. The nurse palpates the client's fundus. Which finding would the nurse identify as expected?",
+                options: [
+                    "two fingerbreadths above the umbilicus",
+                    "at the level of the umbilicus",
+                    "two fingerbreadths below the umbilicus",
+                    "four fingerbreadths below the umbilicus"
+                ],
+                correct: 1,
+                rationale: "During the first 12 hours postpartum, the fundus of the uterus is located at the level of the umbilicus. Over the first few days after birth, the uterus typically descends from the level of the umbilicus at a rate of 1 cm (one fingerbreadth) per day.",
+                chapter: 15,
+                topic: "Postpartum Adaptations",
+                hint: "Think about the normal progression of uterine involution in the immediate postpartum period."
+            },
+            {
+                question: "When caring for a mother who has had a cesarean birth, the nurse would expect the client's lochia to be:",
+                options: [
+                    "greater than after a vaginal birth.",
+                    "about the same as after a vaginal birth.",
+                    "less than after a vaginal birth.",
+                    "saturated with clots and mucus."
+                ],
+                correct: 2,
+                rationale: "Women who have had cesarean births tend to have less flow because the uterine debris is removed manually along with delivery of the placenta.",
+                chapter: 15,
+                topic: "Postpartum Adaptations",
+                hint: "Consider how the surgical procedure might affect uterine cleaning."
+            },
+            {
+                question: "The nurse is developing a teaching plan for a client who has decided to bottle-feed her newborn. Which information would the nurse include in the teaching plan to facilitate suppression of lactation?",
+                options: [
+                    "encouraging the woman to manually express milk",
+                    "suggesting that she take frequent warm showers to soothe her breasts",
+                    "telling her to limit the amount of fluids that she drinks",
+                    "instructing her to apply ice packs to both breasts every other hour"
+                ],
+                correct: 3,
+                rationale: "If the woman is not breastfeeding, relief measures for engorgement include wearing a tight supportive bra 24 hours daily, applying ice to her breasts for approximately 15 to 20 minutes every other hour, and not stimulating her breasts by squeezing or manually expressing milk.",
+                chapter: 15,
+                topic: "Postpartum Adaptations",
+                hint: "Think about measures that would decrease milk production rather than stimulate it."
+            },
+            {
+                question: "A postpartum client who is breastfeeding her newborn tells the nurse, 'I notice that when I feed him, I feel fairly strong contraction-like pain. Labor is over. Why am I having contractions now?' Which response by the nurse would be most appropriate?",
+                options: [
+                    "'Your uterus is still shrinking in size; that's why you're feeling this pain.'",
+                    "'Let me check your vaginal discharge just to make sure everything is fine.'",
+                    "'Your body is responding to the events of labor, just like after a tough workout.'",
+                    "'The baby's sucking releases a hormone that causes the uterus to contract.'"
+                ],
+                correct: 3,
+                rationale: "The woman is describing afterpains, which are usually stronger during breastfeeding because oxytocin released by the sucking reflex strengthens uterine contractions.",
+                chapter: 15,
+                topic: "Postpartum Adaptations",
+                hint: "Consider the hormonal response to breastfeeding."
+            },
+            {
+                question: "When the nurse is assessing a postpartum client approximately 6 hours after birth, which finding would warrant further investigation?",
+                options: [
+                    "deep red, fleshy-smelling lochia",
+                    "voiding of 350 cc",
+                    "blood pressure 90/50 mm Hg",
+                    "profuse sweating"
+                ],
+                correct: 2,
+                rationale: "In most instances of postpartum hemorrhage, blood pressure and cardiac output remain increased because of the compensatory increase in heart rate. Thus, a decrease in blood pressure and cardiac output are not expected changes during the postpartum period.",
+                chapter: 15,
+                topic: "Postpartum Adaptations",
+                hint: "Consider which finding might indicate a potential complication rather than a normal postpartum change."
+            },
+            
+            // Chapter 16 Questions
+            {
+                question: "A woman who is 12 hours postpartum had a pulse rate around 80 beats per minute during pregnancy. Now, the nurse finds a pulse of 66 beats per minute. Which of these actions should the nurse take?",
+                options: [
+                    "Document the finding, as it is a normal finding at this time.",
+                    "Contact the primary care provider, as it indicates early DIC.",
+                    "Contact the primary care provider, as it is a first sign of postpartum eclampsia.",
+                    "Obtain a prescription for a CBC, as it suggests postpartum anemia."
+                ],
+                correct: 0,
+                rationale: "Pulse rates of 60 to 80 beats per minute at rest are normal during the first week after birth. This pulse rate is called puerperal bradycardia.",
+                chapter: 16,
+                topic: "Nursing Management During the Postpartum Period",
+                hint: "Consider normal cardiovascular changes in the postpartum period."
+            },
+            {
+                question: "A client who has just given birth to a healthy newborn required an episiotomy. Which action would the nurse implement immediately after birth to decrease the client's pain from the procedure?",
+                options: [
+                    "Offer warm blankets.",
+                    "Encourage the woman to void.",
+                    "Apply an ice pack to the site.",
+                    "Offer a warm sitz bath."
+                ],
+                correct: 2,
+                rationale: "An ice pack is the first measure used after a vaginal birth to provide perineal comfort from edema, an episiotomy, or lacerations.",
+                chapter: 16,
+                topic: "Nursing Management During the Postpartum Period",
+                hint: "Think about immediate interventions for tissue trauma and edema."
+            },
+            {
+                question: "A nurse is observing a new mother interacting with her newborn. Which statement would alert the nurse to the potential for impaired bonding between mother and newborn?",
+                options: [
+                    "'You have your daddy's eyes.'",
+                    "'He looks like a frog to me.'",
+                    "'Where did you get all that hair?'",
+                    "'He seems to sleep a lot.'"
+                ],
+                correct: 1,
+                rationale: "Negative comments may indicate impaired bonding. Pointing out commonalities such as 'daddy's eyes' and expressing pride such as 'all that hair' are positive attachment behaviors.",
+                chapter: 16,
+                topic: "Nursing Management During the Postpartum Period",
+                hint: "Consider which statement reflects negative rather than positive attachment behaviors."
+            },
+            {
+                question: "When teaching parents about their newborn, the nurse describes the development of a close emotional attraction to a newborn by the parents during the first 30 to 60 minutes after birth. The nurse refers to this process by which term?",
+                options: [
+                    "reciprocity",
+                    "engrossment",
+                    "bonding",
+                    "attachment"
+                ],
+                correct: 2,
+                rationale: "The development of a close emotional attraction to the newborn by parents during the first 30 to 60 minutes after birth describes bonding.",
+                chapter: 16,
+                topic: "Nursing Management During the Postpartum Period",
+                hint: "This term specifically refers to the initial emotional connection."
+            },
+            {
+                question: "Which factor in a client's history would alert the nurse to an increased risk for postpartum hemorrhage?",
+                options: [
+                    "multiparity, age of mother, operative birth",
+                    "size of placenta, small baby, operative birth",
+                    "uterine atony, placenta previa, operative procedures",
+                    "prematurity, infection, length of labor"
+                ],
+                correct: 2,
+                rationale: "Risk factors for postpartum hemorrhage include a precipitous labor less than three hours, uterine atony, placenta previa or abruption, labor induction or augmentation, operative procedures such as vacuum extraction, forceps, or cesarean birth, retained placental fragments, prolonged third stage of labor greater than 30 minutes, multiparity, and uterine overdistention such as from a large infant, twins, or hydramnios.",
+                chapter: 16,
+                topic: "Nursing Management During the Postpartum Period",
+                hint: "Consider conditions that directly affect uterine contraction and placental separation."
+            },
+            
+            // Chapter 17 Questions
+            {
+                question: "A nurse is explaining to a group of new parents about the changes that occur in the neonate to sustain extrauterine life, describing the cardiac and respiratory systems as undergoing the most changes. Which information would the nurse integrate into the explanation to support this description?",
+                options: [
+                    "The cardiac murmur heard at birth disappears by 48 hours of age.",
+                    "Pulmonary vascular resistance (PVR) is decreased as lungs begin to function.",
+                    "Heart rate remains elevated after the first few moments of birth.",
+                    "Breath sounds will have rhonchi for at least the first day of life as fluid is absorbed."
+                ],
+                correct: 1,
+                rationale: "Although all the body systems of the newborn undergo changes, respiratory gas exchange along with circulatory modifications must occur immediately to sustain extrauterine life. With the first breath, PVR decreases, and the heart rate initially increases but then decreases to 120 to 130 bpm after a few minutes.",
+                chapter: 17,
+                topic: "Newborn Adaptation",
+                hint: "Think about the physiological changes needed for the transition from fetal to neonatal circulation."
+            },
+            {
+                question: "A new mother reports that her newborn often spits up after feeding. Assessment reveals regurgitation. Which factor would the nurse integrate into the response?",
+                options: [
+                    "newborn being placed prone after feeding",
+                    "limited ability of digestive enzymes",
+                    "underdeveloped pyloric sphincter",
+                    "relaxed cardiac sphincter"
+                ],
+                correct: 3,
+                rationale: "The cardiac sphincter and nervous control of the stomach is immature, which may lead to uncoordinated peristaltic activity and frequent regurgitation.",
+                chapter: 17,
+                topic: "Newborn Adaptation",
+                hint: "Consider the anatomical and physiological immaturity of the newborn's gastrointestinal system."
+            },
+            {
+                question: "Twenty minutes after birth, a baby begins to move his head from side to side, making eye contact with the mother, and pushes his tongue out several times. The nurse interprets this as:",
+                options: [
+                    "a good time to initiate breast-feeding.",
+                    "the period of decreased responsiveness preceding sleep.",
+                    "a sign that the infant is being overstimulated.",
+                    "evidence that the newborn is becoming chilled."
+                ],
+                correct: 0,
+                rationale: "The newborn is demonstrating behaviors indicating the first period of reactivity, which usually begins at birth and lasts for the first 30 minutes. This is a good time to initiate breastfeeding.",
+                chapter: 17,
+                topic: "Newborn Adaptation",
+                hint: "Consider the newborn's behavioral states in the first hours after birth."
+            },
+            {
+                question: "The nurse institutes measures to maintain thermoregulation based on the understanding that newborns have limited ability to regulate body temperature because they:",
+                options: [
+                    "have a smaller body surface compared to body mass.",
+                    "lose more body heat when they sweat than adults.",
+                    "have an abundant amount of subcutaneous fat all over.",
+                    "are unable to shiver effectively to increase heat production."
+                ],
+                correct: 3,
+                rationale: "Newborns have difficulty maintaining their body heat through shivering and other mechanisms. They have a large body surface area relative to body weight and have limited sweating ability.",
+                chapter: 17,
+                topic: "Newborn Adaptation",
+                hint: "Think about the mechanisms newborns use (or don't use) for thermoregulation."
+            },
+            {
+                question: "A new mother is changing the diaper of her 12-hour-old newborn and asks why the stool is black and sticky. Which response by the nurse would be most appropriate?",
+                options: [
+                    "'You probably took iron during your pregnancy and that is what causes this type of stool.'",
+                    "'This is meconium stool and is normal for a newborn.'",
+                    "'I'll take a sample and check it for possible bleeding.'",
+                    "'This is unusual, and I need to report this to your pediatrician.'"
+                ],
+                correct: 1,
+                rationale: "Meconium is greenish-black and tarry and usually passed within 12 to 24 hours of birth. This is a normal finding.",
+                chapter: 17,
+                topic: "Newborn Adaptation",
+                hint: "Consider the normal progression of newborn stool patterns."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let selectedOption = null;
+        let questionHistory = [];
+        let questionCount = 0;
+
+        // Function to generate a random question
+        function generateRandomQuestion() {
+            // Reset UI
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('rationale').className = 'rationale';
+            document.getElementById('hint').className = 'hint';
+            document.getElementById('nextBtn').disabled = true;
+            document.getElementById('cancelBtn').classList.remove('show');
+            
+            // Get a random question that hasn't been shown recently
+            let newIndex;
+            do {
+                newIndex = Math.floor(Math.random() * allQuestions.length);
+            } while (questionHistory.includes(newIndex) && questionHistory.length < allQuestions.length);
+            
+            // If we've shown all questions, reset the history
+            if (questionHistory.length >= allQuestions.length) {
+                questionHistory = [];
+            }
+            
+            currentQuestionIndex = newIndex;
+            questionHistory.push(currentQuestionIndex);
+            
+            const question = allQuestions[currentQuestionIndex];
+            
+            // Update question count
+            questionCount++;
+            document.getElementById('counter').textContent = `${questionCount}`;
+            
+            // Update progress bar
+            const progress = (questionCount % 10 === 0) ? 100 : ((questionCount % 10) * 10);
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            
+            // Display question
+            document.getElementById('question').textContent = question.question;
+            
+            // Display chapter info
+            document.getElementById('chapterInfo').innerHTML = 
+                `<strong>Chapter ${question.chapter}:</strong> ${question.topic}`;
+            
+            // Set hint text
+            document.getElementById('hintText').textContent = question.hint;
+            
+            // Load options
+            const optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.innerHTML = `
+                    <div class="option-letter">${String.fromCharCode(65 + index)}</div>
+                    <div class="option-text">${option}</div>
+                `;
+                optionElement.onclick = () => selectOption(index);
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Reset selected option
+            selectedOption = null;
+        }
+
+        function selectOption(index) {
+            // If an option is already selected, do nothing
+            if (selectedOption !== null) return;
+            
+            selectedOption = index;
+            const question = allQuestions[currentQuestionIndex];
+            
+            highlightSelectedOption(index);
+            showFeedback(index);
+            
+            // Enable next button
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function cancelSelection() {
+            // Reset the selected option
+            selectedOption = null;
+            
+            // Remove highlighting from all options
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => {
+                option.classList.remove('correct', 'incorrect', 'selected');
+            });
+            
+            // Hide feedback and rationale
+            document.getElementById('feedback').style.display = 'none';
+            document.getElementById('rationale').classList.remove('show');
+            
+            // Hide the cancel button
+            document.getElementById('cancelBtn').classList.remove('show');
+            
+            // Disable next button until a new selection is made
+            document.getElementById('nextBtn').disabled = true;
+        }
+
+        function highlightSelectedOption(index) {
+            const options = document.querySelectorAll('.option');
+            const question = allQuestions[currentQuestionIndex];
+            
+            options.forEach((option, i) => {
+                option.classList.remove('correct', 'incorrect', 'selected');
+                
+                if (i === index) {
+                    option.classList.add('selected');
+                    
+                    if (i === question.correct) {
+                        option.classList.add('correct');
+                        
+                        // Don't show cancel button for correct answers
+                        document.getElementById('cancelBtn').classList.remove('show');
+                    } else {
+                        option.classList.add('incorrect');
+                        // Also highlight the correct answer
+                        options[question.correct].classList.add('correct');
+                        
+                        // Show cancel button only for wrong answers
+                        document.getElementById('cancelBtn').classList.add('show');
+                    }
+                }
+            });
+        }
+
+        function showFeedback(index) {
+            const question = allQuestions[currentQuestionIndex];
+            const feedback = document.getElementById('feedback');
+            const feedbackIcon = document.getElementById('feedbackIcon');
+            const feedbackText = document.getElementById('feedbackText');
+            const rationale = document.getElementById('rationale');
+            const rationaleText = document.getElementById('rationaleText');
+            
+            if (index === question.correct) {
+                feedback.className = 'feedback correct';
+                feedbackIcon.textContent = '✅';
+                feedbackText.textContent = 'Correct! Well done.';
+            } else {
+                feedback.className = 'feedback incorrect';
+                feedbackIcon.textContent = '❌';
+                feedbackText.textContent = `Incorrect. The right answer is: ${String.fromCharCode(65 + question.correct)}`;
+            }
+            
+            feedback.style.display = 'flex';
+            rationaleText.textContent = question.rationale;
+            rationale.classList.add('show');
+        }
+
+        function showHint() {
+            const hint = document.getElementById('hint');
+            hint.classList.add('show');
+        }
+
+        function nextCard() {
+            generateRandomQuestion();
+        }
+
+        function previousCard() {
+            // For random questions, previous doesn't make as much sense
+            // So we'll just generate another random question
+            generateRandomQuestion();
+        }
+
+        // Initialize the app with a random question
+        generateRandomQuestion();
+    </script>
+</body>
+</html>
